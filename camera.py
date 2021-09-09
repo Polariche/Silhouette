@@ -37,7 +37,7 @@ class OrthogonalCamera(nn.Module):
 
         decoded_pose = decode_pose(pose)        # pose : (..., pose_batch, 4, 4)
         decoded_pose = decoded_pose.unsqueeze(-3)
-        uvd1 = torch.cat([uvd, torch.ones_like(depth)], dim=-1)
+        uvd1 = torch.cat([uvd, depth], dim=-1)
         world_pos = torch.matmul(uvd1, decoded_pose.transpose(-1,-2))
         world_pos = world_pos[..., :3]
 
