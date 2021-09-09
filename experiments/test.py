@@ -2,6 +2,9 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 
+import sys
+sys.path.insert(0,'..')
+
 import sampler
 import camera
 import optimization
@@ -16,7 +19,7 @@ if __name__ == "__main__":
     uv = sampler.grid_2d(64, 64).requires_grad_(True)
     depth = torch.zeros((*uv.shape[:-1], 1), device=uv.device)
     pose = torch.zeros((4,4), device=uv.device)
-    pose[:2, :2] = torch.eye(3)
+    pose[:3, :3] = torch.eye(3)
     pose[2,3] = -2
 
     foo = lambda d: sdf(cam(uv, d, pose))

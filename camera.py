@@ -14,7 +14,8 @@ def decode_pose(pose):
     decoded_pose[..., 0, 0]
     decoded_pose[..., 0, 0]
 
-    return decoded_pose
+    #return decoded_pose
+    return pose
 
 def encode_pose(pose):
     # (..., 4, 4) -> (..., 5)
@@ -38,6 +39,7 @@ class OrthogonalCamera(nn.Module):
         decoded_pose = decoded_pose.unsqueeze(-3)
         uvd1 = torch.cat([uvd, torch.ones_like(depth)], dim=-1)
         world_pos = torch.matmul(uvd1, decoded_pose.transpose(-1,-2))
+        world_pos = world_pos[..., :3]
 
         return world_pos
 
@@ -58,6 +60,7 @@ class PerspectiveCamera(nn.Module):
         decoded_pose = decoded_pose.unsqueeze(-3)
         duv11 = torch.cat([duv1, torch.ones_like(depth)], dim=-1)
         world_pos = torch.matmul(duv11, decoded_pose.transpose(-1,-2))
+        world_pos = world_pos[..., :3]
 
         return world_pos
 
@@ -87,7 +90,7 @@ class PerspectiveProject(nn.Module):
     def forward(self, x, pose):
         # x : (..., pose_batch, N, 3)
         # pose : (..., pose_batch, 5)
-        
+
         decoded_pose = decode_pose(pose)
         decoded_pose = decoded_pose.unsqueeze(-3)
         decoded_pose = torch.inverse(decoded_pose)

@@ -6,11 +6,13 @@ import utils
 class SphereSDF(nn.Module):
     def __init__(self, pos, r):
         super(SphereSDF, self).__init__()
+        self.pos = pos
+        self.r = r
     
     def forward(self, x):
         assert x.shape[-1] == self.pos.shape[-1]
-        
-        pos = utils.sync_end_dim(self.pos)
+
+        pos = utils.sync_end_dim(self.pos, x)
         x = x - pos
         s = torch.sqrt((x**2).sum(dim=-1, keepdim=True)) - self.r
 
