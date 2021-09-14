@@ -85,8 +85,8 @@ class PositionalSDF(nn.Module):
             in_dim = 512
             out_dim = 512
 
-            #if i == 0:
-            #    in_dim = 3+256  #259
+            if i == 0:
+                in_dim = 1024
             if i == num_layers-1:
                 out_dim = 1
             elif i == int(num_layers/2)-1:
