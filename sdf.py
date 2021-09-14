@@ -78,8 +78,8 @@ class PositionalSDF(nn.Module):
         self.num_layers = num_layers
         
         # positional encoding
-        self.pe = nn.Linear(3+256, 512)
-        nn.init.normal_(self.pe, 0.0, 1.0)
+        self.pe = nn.Linear(3+256, 512, bias=False)
+        nn.init.normal_(self.pe.weight, 0.0, 1.0)
 
         for i in range(num_layers):
             in_dim = 512
